@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div>
+    <h1>List of Users:</h1>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>Name</th>
+            <th>LastName</th>
+            <th>Operations</th>
+        </tr>
+        <tr style="text-align:left" th:each="user : ${users}">
+            <td th:utext="${user.getId()}"></td>
+            <td th:utext="${user.getName()}"></td>
+            <td th:utext="${user.getLastName()}"></td>
+            <td>
+                <form th:action="@{/users/delete}" method="get">
+                    <input type="hidden" name="id" th:value="${user.getId()}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+
+<!--            вариант с @RequestParam-->
+            <td>
+                <a th:href="@{/users/edit(id=${user.getId()})}">
+                    <button type="button">Edit user</button>
+                </a>
+            </td>
+<!--вариант с @PathVariable-->
+<!--            <td> <a th:href="@{/{id}/edit(id=${user.getId()})}">-->
+<!--                <button type="button">Edit user </button></a>-->
+<!--            </td>-->
+        </tr>
+    </table>
+
+    <input type="button" value="add" onclick="window.location.href = 'addNewUser'"/>
+</div>
+</body>
+</html>

@@ -1,16 +1,11 @@
 package web.controller;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import web.service.UserService;
-
-import java.util.List;
 
 @Controller
 public class UserController {
@@ -23,30 +18,34 @@ public class UserController {
 
     @GetMapping("/users")
     public String showUsers(Model model) {
-        model.addAttribute("users",userService.getListUsers());
-        return "users";
+        model.addAttribute("users", userService.getListUsers());
+        return "users-list";
     }
-
     @RequestMapping("/addNewUser")
     public String addNewUser(Model model) {
         User user = new User();
-        model.addAttribute("users", user);
-        return "user-info";
+        model.addAttribute("user", user);
+        return "user-create";
     }
-
-    @RequestMapping("/saveCar")
-    public String saveUser(@ModelAttribute("users") User user) {
+    @RequestMapping("/saveUser")
+    public String saveUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
         return "redirect:/users";
     }
-
-
-    @GetMapping("/updateUser")
-    public String updateCar(@RequestParam("id") int id, Model model) {
-        User car = userService.getUser(id);
-        model.addAttribute("car", car);
-        return "user-info";
+    @GetMapping("/users/delete")
+    public String deleteUserById(@RequestParam("id") int id) {
+        userService.removeUserById(id);
+        return "redirect:/users";
     }
 
-
+    @GetMapping("/{id}/edit")
+    public String editUser(@RequestParam("id") int id, Model model) {
+        model.addAttribute("user", userService.getUser(id));
+        return "edit";
+    }
+    @PostMapping("/edit")
+    public String edit(User user) {
+      userService.saveUser(user);
+        return "redirect:/users";
+    }
 }
