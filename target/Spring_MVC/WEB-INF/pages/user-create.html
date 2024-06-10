@@ -6,14 +6,14 @@
 </head>
 <body>
 <h1>Add New User</h1>
-<form action="/saveUser" method="post" modelAttribute="user">
 
-    <input type="hidden" part="id"/>
+    <form th:action="@{/saveUser}" th:object="${user}" method="post">
+<!--        <input type="hidden" th:field="*{id}" value="${user.id}"/>-->
 
     <label for="name">Name:</label>
     <input type="text" id="name" name="name"><br><br>
 
-    <label for="lastName">Model:</label>
+    <label for="lastName">LastName:</label>
     <input type="text" id="lastName" name="lastName"><br><br>
 
     <input type="submit" value="Save">

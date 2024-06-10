@@ -2,6 +2,7 @@ package web.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -19,11 +20,9 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-
 @PropertySource("classpath:db.properties")
-
 @EnableJpaRepositories("web")
-//@ComponentScan(value = "web")
+@ComponentScan("web")
 
 public class AppConfig {
    private static final String PROP_DATABASE_DRIVER = "db.driver";
@@ -46,7 +45,6 @@ public class AppConfig {
 
    /************* Start Spring JPA config details **************/
 
-   //@Bean
    @Bean(name = "entityManagerFactory")
    public LocalContainerEntityManagerFactoryBean getEntityManagerFactoryBean() {
       LocalContainerEntityManagerFactoryBean factoryBean =
@@ -54,7 +52,6 @@ public class AppConfig {
       factoryBean.setJpaVendorAdapter(getJpaVendorAdapter());
       factoryBean.setDataSource(getDataSource());
       factoryBean.setPersistenceUnitName("myJpaPersistenceUnit");
-      //factoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
       factoryBean.setPackagesToScan(env.getRequiredProperty(PROP_ENTITYMANAGER_PACKAGES_TO_SCAN));
       factoryBean.setJpaProperties(getHibernateProperties());
       return factoryBean;
@@ -64,9 +61,6 @@ public class AppConfig {
    public JpaVendorAdapter getJpaVendorAdapter() {
       return new HibernateJpaVendorAdapter();
    }
-
-
-
    @Bean(name = "transactionManager")
    public PlatformTransactionManager getTransactionManager() {
       return new JpaTransactionManager(getEntityManagerFactoryBean().getObject());

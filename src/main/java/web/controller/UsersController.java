@@ -8,26 +8,26 @@ import org.springframework.stereotype.Controller;
 import web.service.UserService;
 
 @Controller
-public class UserController {
-    private UserService userService;
+public class UsersController {
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UsersController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/users")
     public String showUsers(Model model) {
-        model.addAttribute("users", userService.getListUsers());
+        model.addAttribute("users", userService.getAll());
         return "users-list";
     }
-    @RequestMapping("/addNewUser")
+    @GetMapping("/addNewUser")
     public String addNewUser(Model model) {
         User user = new User();
         model.addAttribute("user", user);
         return "user-create";
     }
-    @RequestMapping("/saveUser")
+    @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
         return "redirect:/users";

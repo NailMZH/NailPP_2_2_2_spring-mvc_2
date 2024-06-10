@@ -1,11 +1,11 @@
-package web.dao;
+package web.repositories;
 
 import web.model.User;
 
 
 import java.util.List;
 
-public interface UserDao {
+public interface UserRepository {
     List<User> getListUsers();
     void removeUserById(int id);
 
